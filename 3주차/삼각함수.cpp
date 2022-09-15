@@ -49,15 +49,18 @@ int main(void)
         glClearColor(.0f, 0.0f, 0.0f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        double rad = 1; //반지름이 1인 원
         glBegin(GL_LINE_STRIP);
         glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-        glVertex3f(0.0f, 1.0f, 0.0f);
-        glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-        glVertex3f(1.0f, -1.0f, 0.0f);
-        glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-        glVertex3f(-1.0f, -1.0f, 0.0f);
-        glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-        glVertex3f(0.0f, 1.0f, 0.0f);
+
+        for (float i = 0; i < 360; i++) //원의 둘레는 2πr로 각도를 구하기위해 360번 반복한다.
+        {
+            double angle, x, y;
+            angle = glm::radians(i); //사잇각의 들어가야할 각도를 라디안을 이용하여 구한다 공식은 i*π/180
+            x = rad * cos(angle); //cos = x/rad == x = cos*rad
+            y = rad * sin(angle); //sin = y/rad == y = sin*rad
+            glVertex2f(x, y); // 원을 그리기 위한 꼭지점의 좌표를 찍는다.
+        }
         glEnd();
 
         glfwSwapBuffers(window);
