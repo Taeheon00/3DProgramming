@@ -68,19 +68,20 @@ public:
 class Vec3 { 
 public:
     float x, y,z;
+    float Mat[3][1];
 
     Vec3()
     {
-        x = 0;
-        y = 0;
-        z = 1;
+        x = Mat[0][0] = 0;
+        y = Mat[1][0] = 0;
+        z = Mat[2][0] = 1;
     }//°ªÀ» ÀÔ·Â¹ÞÁö ¾Ê¾ÒÀ»¶§ÀÇ ¿øÁ¡
 
     Vec3(float X, float Y, float Z)
     {
-        x = X;
-        y = Y;
-        z = Z;
+        x = Mat[0][0] = X;
+        y = Mat[1][0] = Y;
+        z = Mat[2][0] = Z;
     }//°ªÀ» ÀÔ·Â¹Þ¾Æ¼­ ¿øÁ¡À» ¼³Á¤
 
     Vec3 multiply_vector()
@@ -89,6 +90,35 @@ public:
     }
 
     Vec3 multiply_transpose_vector()
+    {
+
+    }
+};
+
+class Vec1X3 {
+public:
+    float x, y, z;
+
+    Vec1X3()
+    {
+        x = 0;
+        y = 0;
+        z = 1;
+    }//°ªÀ» ÀÔ·Â¹ÞÁö ¾Ê¾ÒÀ»¶§ÀÇ ¿øÁ¡
+
+    Vec1X3(float X, float Y, float Z)
+    {
+        x = X;
+        y = Y;
+        z = Z;
+    }//°ªÀ» ÀÔ·Â¹Þ¾Æ¼­ ¿øÁ¡À» ¼³Á¤
+
+    Vec1X3 multiply_vector()
+    {
+
+    }
+
+    Vec1X3 multiply_transpose_vector()
     {
 
     }
@@ -138,12 +168,25 @@ const Mat3 operator * (const Mat3& mat, const Mat3& ref) //3*3Çà·Ä ³¢¸®ÀÇ °ö¼ÀÀ»
     return result;
 }
 
-const Vec3 operator * (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
+const Vec1X3 operator * (Vec1X3 vec, Vec1X3 ref) //1*3º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
 {
-    Vec3 result;
+    Vec1X3 result;
     result.x = vec.x * ref.x;
     result.y = vec.y * ref.y;
     result.z = vec.z * ref.z;
+    return result;
+}
+
+const Vec3 operator * (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] * ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
     return result;
 }
 
@@ -161,12 +204,25 @@ const Mat3 operator / (const Mat3& mat, const Mat3& ref) //3*3Çà·Ä ³¢¸®ÀÇ ³ª´°¼À
     return result;
 }
 
-const Vec3 operator / (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
+const Vec1X3 operator / (Vec1X3 vec, Vec1X3 ref) //1*3º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
 {
-    Vec3 result;
+    Vec1X3 result;
     result.x = vec.x / ref.x;
     result.y = vec.y / ref.y;
     result.z = vec.z / ref.z;
+    return result;
+}
+
+const Vec3 operator / (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] / ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
     return result;
 }
 
@@ -184,12 +240,25 @@ const Mat3 operator + (const Mat3& mat, const Mat3& ref) //3*3Çà·Ä ³¢¸®ÀÇ µ¡¼ÀÀ»
     return result;
 }
 
-const Vec3 operator + (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ µ¡¼ÀÀ» ±¸Çö
+const Vec1X3 operator + (Vec1X3 vec, Vec1X3 ref) //1*3º¤ÅÍ ³¢¸®ÀÇ µ¡¼ÀÀ» ±¸Çö
 {
-    Vec3 result;
+    Vec1X3 result;
     result.x = vec.x + ref.x;
     result.y = vec.y + ref.y;
     result.z = vec.z + ref.z;
+    return result;
+}
+
+const Vec3 operator + (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ µ¡¼ÀÀ» ±¸Çö
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] + ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
     return result;
 }
 
@@ -207,12 +276,25 @@ const Mat3 operator - (const Mat3& mat, const Mat3& ref) //3*3Çà·Ä ³¢¸®ÀÇ »¬¼ÀÀ»
     return result;
 }
 
-const Vec3 operator - (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
+const Vec1X3 operator - (Vec1X3 vec, Vec1X3 ref) //1*3º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
 {
-    Vec3 result;
+    Vec1X3 result;
     result.x = vec.x - ref.x;
     result.y = vec.y - ref.y;
     result.z = vec.z - ref.z;
+    return result;
+}
+
+const Vec3 operator - (Vec3 vec, Vec3 ref) //3*1º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] - ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
     return result;
 }
 
@@ -289,8 +371,40 @@ public:
 class Vec4 {
 public:
     float x, y, z,w;
+    float Mat[4][1];
 
     Vec4()
+    {
+        x = Mat[0][0] = 0;
+        y = Mat[1][0] = 0;
+        z = Mat[2][0] = 0;
+        w = Mat[3][0] = 1;
+    }//°ªÀ» ÀÔ·Â¹ÞÁö ¾Ê¾ÒÀ»¶§ÀÇ ¿øÁ¡
+
+    Vec4(float X, float Y, float Z, float W)
+    {
+        x = Mat[0][0] = X;
+        y = Mat[1][0] = Y;
+        z = Mat[2][0] = Z;
+        w = Mat[3][0] = W;
+    }//°ªÀ» ÀÔ·Â¹Þ¾Æ¼­ ¿øÁ¡À» ¼³Á¤
+
+    Vec4 multiply_vector()
+    {
+
+    }
+
+    Vec4 multiply_transpose_vector()
+    {
+
+    }
+};
+
+class Vec1X4 {
+public:
+    float x, y, z, w;
+
+    Vec1X4()
     {
         x = 0;
         y = 0;
@@ -298,7 +412,7 @@ public:
         w = 1;
     }//°ªÀ» ÀÔ·Â¹ÞÁö ¾Ê¾ÒÀ»¶§ÀÇ ¿øÁ¡
 
-    Vec4(float X, float Y, float Z, float W)
+    Vec1X4(float X, float Y, float Z, float W)
     {
         x = X;
         y = Y;
@@ -365,13 +479,27 @@ const Mat4 operator * ( Mat4 mat, Mat4 ref) //4*4Çà·Ä ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
     return result;
 }
 
-const Vec4 operator * (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
+const Vec1X4 operator * (Vec1X4 vec, Vec1X4 ref) //1*4º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
 {
-    Vec4 result;
+    Vec1X4 result;
     result.x = vec.x * ref.x;
     result.y = vec.y * ref.y;
     result.z = vec.z * ref.z;
     result.w = vec.w * ref.w;
+    return result;
+}
+
+const Vec4 operator * (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ °ö¼ÀÀ» ±¸Çö
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] * ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
     return result;
 }
 
@@ -389,13 +517,27 @@ const Mat4 operator / (Mat4 mat, Mat4 ref) //4*4Çà·Ä ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
     return result;
 }
 
-const Vec4 operator / (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
+const Vec1X4 operator / (Vec1X4 vec, Vec1X4 ref) //1*4º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
 {
-    Vec4 result;
+    Vec1X4 result;
     result.x = vec.x / ref.x;
     result.y = vec.y / ref.y;
     result.z = vec.z / ref.z;
     result.w = vec.w / ref.w;
+    return result;
+}
+
+const Vec4 operator / (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ ³ª´°¼ÀÀ» ±¸Çö
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] / ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
     return result;
 }
 
@@ -413,13 +555,27 @@ const Mat4 operator + (Mat4 mat, Mat4 ref) //4*4Çà·Ä ³¢¸®ÀÇ µ¡¼ÀÀ» ±¸Çö
     return result;
 }
 
-const Vec4 operator + (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇµ¡¼ÀÀ» ±¸Çö
+const Vec1X4 operator + (Vec1X4 vec, Vec1X4 ref) //1*4º¤ÅÍ ³¢¸®ÀÇµ¡¼ÀÀ» ±¸Çö
 {
-    Vec4 result;
+    Vec1X4 result;
     result.x = vec.x + ref.x;
     result.y = vec.y + ref.y;
     result.z = vec.z + ref.z;
     result.w = vec.w + ref.w;
+    return result;
+}
+
+const Vec4 operator + (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇµ¡¼ÀÀ» ±¸Çö
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] + ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
     return result;
 }
 
@@ -437,12 +593,26 @@ const Mat4 operator - (Mat4 mat, Mat4 ref) //4*4Çà·Ä ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
     return result;
 }
 
-const Vec4 operator - (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
+const Vec1X4 operator - (Vec1X4 vec, Vec1X4 ref) //1*4º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
 {
-    Vec4 result;
+    Vec1X4 result;
     result.x = vec.x - ref.x;
     result.y = vec.y - ref.y;
     result.z = vec.z - ref.z;
     result.w = vec.w - ref.w;
+    return result;
+}
+
+const Vec4 operator - (Vec4 vec, Vec4 ref) //4*1º¤ÅÍ ³¢¸®ÀÇ »¬¼ÀÀ» ±¸Çö
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] - ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
     return result;
 }

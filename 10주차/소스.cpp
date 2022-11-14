@@ -41,7 +41,7 @@ void main()
 	Vec4 w = Vec4(1, 2, 3, 4);
 	Vec4 e = Vec4(1, 2, 3, 4);
 
-	Vec4 r = w + e;
+	Vec4 r = w * e;
 
 	cout << fixed;
 	cout.precision(0); // 소수점 제거
