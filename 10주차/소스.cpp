@@ -59,8 +59,29 @@ void main()
 		cout << endl;
 	}
 
+	for (int i = 0; i < 4; i++)
+	{
+		cout << r.Mat[i][0];
+		cout << endl;
+	}
+
 	cout << r.x << endl;
 	cout << r.y << endl;
 	cout << r.z << endl;
 	cout << r.w << endl;
+
+	a.transpose_matrix() = a;
+
+
+	Mat3 u = a * b;
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << u.Mat[i][j];
+			if (j < 2) cout << " ";
+		}
+		cout << endl;
+	}
 }

@@ -53,16 +53,6 @@ public:
 
         return result;
     }//전치행렬로 변환하는 함수
-
-    Mat3 multiply_matrix()
-    {
-       
-    }
-
-    Mat3 multiply_transpose_matrix()
-    {
-
-    }
 };
 
 class Vec3 { 
@@ -83,16 +73,6 @@ public:
         y = Mat[1][0] = Y;
         z = Mat[2][0] = Z;
     }//값을 입력받아서 원점을 설정
-
-    Vec3 multiply_vector()
-    {
-
-    }
-
-    Vec3 multiply_transpose_vector()
-    {
-
-    }
 };
 
 class Vec1X3 {
@@ -112,19 +92,9 @@ public:
         y = Y;
         z = Z;
     }//값을 입력받아서 원점을 설정
-
-    Vec1X3 multiply_vector()
-    {
-
-    }
-
-    Vec1X3 multiply_transpose_vector()
-    {
-
-    }
 };
 
-const Vec3 operator * (const Mat3& ref, const Vec3& vec) //vec3와 3*3행렬의 곱셈을 구현
+const Vec3 operator * (const Mat3 ref, const Vec3 vec) //vec3와 3*3행렬의 곱셈을 구현
 {
     Vec3 result;
     Mat3 mat = ref;
@@ -139,22 +109,20 @@ const Vec3 operator * (const Mat3& ref, const Vec3& vec) //vec3와 3*3행렬의 곱셈
     return result;
 }
 
-const Vec3 operator * (const Vec3& vec, const Mat3& ref) //vec3와 3*3행렬의 곱셈을 구현
+const Vec3 operator * (const Vec3 vec, const Mat3 ref) //vec3와 3*3행렬의 곱셈을 구현
 {
     Vec3 result;
-    Mat3 mat = ref;
-    mat = mat.transpose_matrix(); //전치행렬로 변환
 
     float x = vec.x; // 3*1행렬의 x설정
     float y = vec.y; // 3*1행렬의 y설정
     float z = vec.z; // 3*1행렬의 z설정
-    result.x = (x * mat.Mat[0][0]) + (y * mat.Mat[0][1]) + (z * mat.Mat[0][2]); 
-    result.y = (x * mat.Mat[1][0]) + (y * mat.Mat[1][1]) + (z * mat.Mat[1][2]);
-    result.z = (x * mat.Mat[2][0]) + (y * mat.Mat[2][1]) + (z * mat.Mat[2][2]);
+    result.x = (x * ref.Mat[0][0]) + (y * ref.Mat[1][0]) + (z * ref.Mat[2][0]);
+    result.y = (x * ref.Mat[0][1]) + (y * ref.Mat[1][1]) + (z * ref.Mat[2][1]);
+    result.z = (x * ref.Mat[0][2]) + (y * ref.Mat[1][2]) + (z * ref.Mat[2][2]);
     return result;
 }
 
-const Mat3 operator * (const Mat3& mat, const Mat3& ref) //3*3행렬 끼리의 곱셈을 구현
+const Mat3 operator * (const Mat3 mat, const Mat3 ref) //3*3행렬 끼리의 곱셈을 구현
 {
     Mat3 result;
 
@@ -190,7 +158,29 @@ const Vec3 operator * (Vec3 vec, Vec3 ref) //3*1벡터 끼리의 곱셈을 구현
     return result;
 }
 
-const Mat3 operator / (const Mat3& mat, const Mat3& ref) //3*3행렬 끼리의 나눗셈을 구현
+const Vec1X3 operator * (Vec1X3 vec, int ref) //1*3벡터와 상수의 곱셈을 구현
+{
+    Vec1X3 result;
+    result.x = vec.x * ref;
+    result.y = vec.y * ref;
+    result.z = vec.z * ref;
+    return result;
+}
+
+const Vec3 operator * (Vec3 vec, int ref) //3*1벡터와 상수의 곱셈을 구현
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] * ref;
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    return result;
+}
+
+const Mat3 operator / (Mat3 mat, Mat3 ref) //3*3행렬 끼리의 나눗셈을 구현
 {
     Mat3 result;
 
@@ -219,6 +209,28 @@ const Vec3 operator / (Vec3 vec, Vec3 ref) //3*1벡터 끼리의 나눗셈을 구현
     for (int i = 0; i < 3; i++)
     {
         result.Mat[i][0] = vec.Mat[i][0] / ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    return result;
+}
+
+const Vec1X3 operator / (Vec1X3 vec, int ref) //1*3벡터와 상수의 나눗셈을 구현
+{
+    Vec1X3 result;
+    result.x = vec.x / ref;
+    result.y = vec.y / ref;
+    result.z = vec.z / ref;
+    return result;
+}
+
+const Vec3 operator / (Vec3 vec, int ref) //3*1벡터와 상수의 나눗셈을 구현
+{
+    Vec3 result;
+    for (int i = 0; i < 3; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] / ref;
     }
     result.x = result.Mat[0][0];
     result.y = result.Mat[1][0];
@@ -356,16 +368,6 @@ public:
 
         return result;
     }//전치행렬로 변환하는 함수
-
-    Mat4 multiply_matrix()
-    {
-
-    }
-
-    Mat4 multiply_transpose_matrix()
-    {
-
-    }
 };
 
 class Vec4 {
@@ -388,16 +390,6 @@ public:
         z = Mat[2][0] = Z;
         w = Mat[3][0] = W;
     }//값을 입력받아서 원점을 설정
-
-    Vec4 multiply_vector()
-    {
-
-    }
-
-    Vec4 multiply_transpose_vector()
-    {
-
-    }
 };
 
 class Vec1X4 {
@@ -419,16 +411,6 @@ public:
         z = Z;
         w = W;
     }//값을 입력받아서 원점을 설정
-
-    Vec4 multiply_vector()
-    {
-
-    }
-
-    Vec4 multiply_transpose_vector()
-    {
-
-    }
 };
 
 const Vec4 operator * ( Mat4 ref,  Vec4 vec) //vec4와 4*4행렬의 곱셈을 구현
@@ -451,17 +433,15 @@ const Vec4 operator * ( Mat4 ref,  Vec4 vec) //vec4와 4*4행렬의 곱셈을 구현
 const Vec4 operator * ( Vec4 vec,  Mat4 ref) //vec4와 4*4행렬의 곱셈을 구현
 {
     Vec4 result;
-    Mat4 mat = ref;
-    mat = mat.transpose_matrix(); //전치행렬로 변환
 
     float x = vec.x; // 4*1행렬의 x설정
     float y = vec.y; // 4*1행렬의 y설정
     float z = vec.z; // 4*1행렬의 z설정
     float w = vec.w; // 4*1행렬의 w설정
-    result.x = (x * mat.Mat[0][0]) + (y * mat.Mat[0][1]) + (z * mat.Mat[0][2]) + (w * mat.Mat[0][3]);
-    result.y = (x * mat.Mat[1][0]) + (y * mat.Mat[1][1]) + (z * mat.Mat[1][2]) + (w * mat.Mat[1][3]);
-    result.z = (x * mat.Mat[2][0]) + (y * mat.Mat[2][1]) + (z * mat.Mat[2][2]) + (w * mat.Mat[2][3]);
-    result.w = (x * mat.Mat[3][0]) + (y * mat.Mat[3][1]) + (z * mat.Mat[3][2]) + (w * mat.Mat[3][3]);
+    result.x = (x * ref.Mat[0][0]) + (y * ref.Mat[1][0]) + (z * ref.Mat[2][0]) + (w * ref.Mat[3][0]);
+    result.y = (x * ref.Mat[0][1]) + (y * ref.Mat[1][1]) + (z * ref.Mat[2][1]) + (w * ref.Mat[3][1]);
+    result.z = (x * ref.Mat[0][2]) + (y * ref.Mat[1][2]) + (z * ref.Mat[2][2]) + (w * ref.Mat[3][2]);
+    result.w = (x * ref.Mat[0][3]) + (y * ref.Mat[1][3]) + (z * ref.Mat[2][3]) + (w * ref.Mat[3][3]);
     return result;
 }
 
@@ -503,6 +483,30 @@ const Vec4 operator * (Vec4 vec, Vec4 ref) //4*1벡터 끼리의 곱셈을 구현
     return result;
 }
 
+const Vec1X4 operator * (Vec1X4 vec, int ref) //1*4벡터와 상수의 곱셈을 구현
+{
+    Vec1X4 result;
+    result.x = vec.x * ref;
+    result.y = vec.y * ref;
+    result.z = vec.z * ref;
+    result.w = vec.w * ref;
+    return result;
+}
+
+const Vec4 operator * (Vec4 vec, int ref) //4*1벡터와 상수의 곱셈을 구현
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] * ref;
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
+    return result;
+}
+
 const Mat4 operator / (Mat4 mat, Mat4 ref) //4*4행렬 끼리의 나눗셈을 구현
 {
     Mat4 result;
@@ -533,6 +537,30 @@ const Vec4 operator / (Vec4 vec, Vec4 ref) //4*1벡터 끼리의 나눗셈을 구현
     for (int i = 0; i < 4; i++)
     {
         result.Mat[i][0] = vec.Mat[i][0] / ref.Mat[i][0];
+    }
+    result.x = result.Mat[0][0];
+    result.y = result.Mat[1][0];
+    result.z = result.Mat[2][0];
+    result.w = result.Mat[3][0];
+    return result;
+}
+
+const Vec1X4 operator / (Vec1X4 vec, int ref) //1*4벡터와 상수의 나눗셈을 구현
+{
+    Vec1X4 result;
+    result.x = vec.x / ref;
+    result.y = vec.y / ref;
+    result.z = vec.z / ref;
+    result.w = vec.w / ref;
+    return result;
+}
+
+const Vec4 operator / (Vec4 vec, int ref) //4*1벡터와 상수의 나눗셈을 구현
+{
+    Vec4 result;
+    for (int i = 0; i < 4; i++)
+    {
+        result.Mat[i][0] = vec.Mat[i][0] / ref;
     }
     result.x = result.Mat[0][0];
     result.y = result.Mat[1][0];
